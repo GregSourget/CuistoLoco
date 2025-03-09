@@ -10,16 +10,17 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _codeController = TextEditingController();
+  String? verificationCode;
 
   TwilioFlutter twilioFlutter = TwilioFlutter(
-    accountSid: 'votre_account_sid',
-    authToken: 'votre_auth_token',
-    twilioNumber: 'votre_numero_twilio',
+    accountSid: 'AC2df89184d36e6ce345e046870406f1f2',
+    authToken: 'b64e87add6eb6f8870645971731162ed',
+    twilioNumber: '+18284265553',
   );
 
   Future<void> sendVerificationCode() async {
     String phoneNumber = _phoneController.text;
-    String verificationCode = generateVerificationCode(); // Générez un code aléatoire
+    verificationCode = generateVerificationCode(); // Générez un code aléatoire
     await twilioFlutter.sendSMS(
       toNumber: phoneNumber,
       messageBody: 'Votre code de vérification est : $verificationCode',
@@ -28,7 +29,37 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void verifyCode() {
     String enteredCode = _codeController.text;
-    // Vérifiez le code ici
+    if (enteredCode == verificationCode) {
+      // Le code est correct
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Succès'),
+          content: Text('Le code de vérification est correct.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      // Le code est incorrect
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Erreur'),
+          content: Text('Le code de vérification est incorrect.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override
