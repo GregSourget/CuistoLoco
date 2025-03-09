@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:twilio_flutter/twilio_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'utils.dart';
+import 'home_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -31,22 +32,13 @@ class _AuthScreenState extends State<AuthScreen> {
   void verifyCode() {
     String enteredCode = _codeController.text;
     if (enteredCode == verificationCode) {
-      // Le code est correct
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Succès'),
-          content: Text('Le code de vérification est correct.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('OK'),
-            ),
-          ],
-        ),
+      // Le code est correct, naviguer vers HomeScreen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
       );
     } else {
-      // Le code est incorrect
+      // Le code est incorrect, afficher un message d'erreur
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
