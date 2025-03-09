@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twilio_flutter/twilio_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'utils.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -13,9 +14,9 @@ class _AuthScreenState extends State<AuthScreen> {
   String? verificationCode;
 
   TwilioFlutter twilioFlutter = TwilioFlutter(
-    accountSid: 'AC2df89184d36e6ce345e046870406f1f2',
-    authToken: 'b64e87add6eb6f8870645971731162ed',
-    twilioNumber: '+18284265553',
+    accountSid: dotenv.env['ACC_SID'] ?? '',
+    authToken: dotenv.env['TOKEN'] ?? '',
+    twilioNumber: dotenv.env['NUMBER'] ?? '',
   );
 
   Future<void> sendVerificationCode() async {
