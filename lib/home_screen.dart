@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
+import 'bottom_navigation.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Accueil')),
-      body: Center(
-        child: Text('Bienvenue sur la page d\'accueil !'),
-      ),
-    );
+    return BottomNavigation();
   }
 }

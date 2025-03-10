@@ -22,7 +22,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   Future<void> sendVerificationCode() async {
     String phoneNumber = _phoneController.text;
-    verificationCode = generateVerificationCode(); // Générez un code aléatoire
+    verificationCode = generateVerificationCode(); // Génére un code aléatoire
     await twilioFlutter.sendSMS(
       toNumber: phoneNumber,
       messageBody: 'Votre code de vérification est : $verificationCode',
