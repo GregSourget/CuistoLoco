@@ -127,21 +127,31 @@ class _AuthScreenState extends State<AuthScreen> {
               controller: _phoneController,
               decoration: InputDecoration(labelText: 'Numéro de téléphone'),
             ),
+            SizedBox(height: 20),
             TextField(
               controller: _codeController,
               decoration: InputDecoration(labelText: 'Code de vérification'),
             ),
-            ElevatedButton(
-              onPressed: sendVerificationCode,
-              child: Text('Envoyer le code'),
-            ),
-            ElevatedButton(
-              onPressed: verifyCode,
-              child: Text('Vérifier le code'),
-            ),
-          ],
+            SizedBox(height: 50),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+        Expanded(
+        child: ElevatedButton(
+        onPressed: sendVerificationCode,
+          child: Text('Envoyer le code'),
         ),
       ),
+      SizedBox(width: 10), // Espace entre les boutons
+      Expanded(
+        child: ElevatedButton(
+          onPressed: verifyCode,
+          child: Text('Vérifier le code'),
+          )
+        )],
+        ),
+      ]),
+      )
     );
   }
 }

@@ -1,17 +1,20 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
+import 'package:http/http.dart' as http;
 
 class Camera extends StatefulWidget {
+  final CameraDescription camera;
+  const Camera({Key? key, required this.camera}) : super(key: key);
   @override
   _CameraPageState createState() => _CameraPageState();
 }
 
 class _CameraPageState extends State<Camera> {
   CameraController? controller;
-  List<CameraDescription>? cameras;
-  final ImageLabeler _imageLabeler = ImageLabeler(options: ImageLabelerOptions());
-  Map<String, int> foodDictionary = {};
+  bool _isDetecting = false;
+  final String apiKey = 'AIzaSyAGJ82vv7lParZ0-8rJUxUePK9l_dSzGFk'; // Remplacez par votre clé API
 
   @override
   void initState() {
@@ -20,33 +23,49 @@ class _CameraPageState extends State<Camera> {
   }
 
   Future<void> _initializeCamera() async {
-    cameras = await availableCameras();
-    if (cameras!.isNotEmpty) {
-      controller = CameraController(cameras![0], ResolutionPreset.high);
-      await controller?.initialize();
-      setState(() {});
-    } else {
-      print('No cameras available');
-    }
+    controller = CameraController(widget.camera, ResolutionPreset.high);
+    await controller?.initialize();
+    setState(() {});
   }
 
   Future<void> _captureImage() async {
     if (controller != null && controller!.value.isInitialized) {
+      setState(() {
+        _isDetecting = true;
+      });
+
       try {
         final image = await controller!.takePicture();
-        final inputImage = InputImage.fromFilePath(image.path);
-        final labels = await _imageLabeler.processImage(inputImage);
+        final file = File(image.path);
+        final bytes = await file.readAsBytes();
+        final base64Image = base64Encode(bytes);
 
-        for (var label in labels) {
-          final text = label.label;
-          if (text.contains('food') || text.contains('aliment')) {
-            foodDictionary[text] = (foodDictionary[text] ?? 0) + 1;
-          }
+        final response = await http.post(
+          Uri.parse('https://vision.googleapis.com/v1/images:annotate?key=$apiKey'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            'requests': [
+              {
+                'image': {'content': base64Image},
+                'features': [{'type': 'OBJECT_LOCALIZATION', 'maxResults': 5}],
+              }
+            ]
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          final objects = data['responses'][0]['localizedObjectAnnotations'];
+          print('Objets détectés: $objects');
+        } else {
+          print('Erreur: ${response.statusCode}');
         }
-
-        print('Aliments détectés: $foodDictionary');
       } catch (e) {
         print('Erreur lors de la capture de l\'image: $e');
+      } finally {
+        setState(() {
+          _isDetecting = false;
+        });
       }
     }
   }
@@ -65,6 +84,10 @@ class _CameraPageState extends State<Camera> {
     return Scaffold(
       appBar: AppBar(title: Text('Camera')),
       body: CameraPreview(controller!),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _captureImage,
+        child: Icon(Icons.camera),
+      ),
     );
   }
 }

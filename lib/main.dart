@@ -20,8 +20,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: ThemeData.dark().copyWith(
+        colorScheme: ColorScheme.dark(
+          primary: Colors.teal, // Couleur primaire personnalisée
+          secondary: Colors.amber, // Couleur d'accentuation personnalisée
+        ),
+        scaffoldBackgroundColor: Colors.black, // Couleur de fond des écrans
+        appBarTheme: AppBarTheme(
+          color: Colors.teal, // Couleur de la barre d'application
+        ),
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.amber, // Couleur des boutons
+          textTheme: ButtonTextTheme.primary,
+        ),
       ),
       home: RegisterScreen(),
       routes: {

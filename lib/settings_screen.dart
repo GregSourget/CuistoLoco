@@ -9,7 +9,7 @@ class SettingsScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: Text('Paramètres de l\'application.'),
+        child: Text('in progress...'),
       ),
     );
   }

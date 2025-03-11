@@ -14,22 +14,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    // Vous pouvez ajouter une validation ici pour vérifier que l'email et le mot de passe sont valides
-    if (email.isNotEmpty && isValidEmail(email) && password.isNotEmpty  && isValidPassword(password)) {
-    // Naviguer vers l'écran d'authentification
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AuthScreen(email: email, password: password),
-      ),
-    );
-  }else {
-      // Afficher un message d'erreur si les champs sont vides
+    // Vérifiez que l'email et le mot de passe sont valides
+    if (email.isNotEmpty && isValidEmail(email) && password.isNotEmpty && isValidPassword(password)) {
+      // Naviguer vers l'écran d'authentification
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AuthScreen(email: email, password: password),
+        ),
+      );
+    } else {
+      // Afficher un message d'erreur si les champs sont vides ou incorrects
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: Text('Erreur'),
-          content: Text('Veuillez remplir tous les champs correctements (mdp > 6 charactères).'),
+          content: Text('Veuillez remplir tous les champs correctement (mdp > 6 caractères).'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -57,24 +57,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Enregistrement / Connexion')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Adresse e-mail'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Mot de passe'),
-              obscureText: true,
-            ),
-            ElevatedButton(
-              onPressed: navigateToAuthScreen,
-              child: Text('S\'enregistrer / se connecter'),
-            ),
-          ],
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(labelText: 'Adresse e-mail'),
+              ),
+              SizedBox(height: 30), // Espace entre les champs de texte
+              TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(labelText: 'Mot de passe'),
+                obscureText: true,
+              ),
+              SizedBox(height: 60), // Espace de 50 pixels entre le champ de texte et le bouton
+              ElevatedButton(
+                onPressed: navigateToAuthScreen,
+                child: Text('S\'enregistrer / se connecter'),
+              ),
+            ],
+          ),
         ),
       ),
     );
