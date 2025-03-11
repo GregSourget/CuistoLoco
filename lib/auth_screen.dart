@@ -3,8 +3,7 @@ import 'package:twilio_flutter/twilio_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'utils.dart';
-import 'home_screen.dart';
-
+import 'bottom_navigation.dart';
 
 class AuthScreen extends StatefulWidget {
   final String email;
@@ -60,10 +59,7 @@ class _AuthScreenState extends State<AuthScreen> {
     if (enteredCode == verificationCode) {
       createAccount(widget.email, widget.password, phoneNumber);
       // Le code est correct, naviguer vers HomeScreen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
+      Navigator.pushReplacementNamed(context, '/home');
     } else {
       // Le code est incorrect, afficher un message d'erreur
       showDialog(
@@ -99,7 +95,7 @@ class _AuthScreenState extends State<AuthScreen> {
         // Compte créé
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => BottomNavigation()),
         );
       }
     } catch (e) {

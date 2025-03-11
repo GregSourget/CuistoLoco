@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'bottom_navigation.dart';
 import 'register.dart';
 
 void main() async {
@@ -18,9 +19,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       home: RegisterScreen(),
+      routes: {
+        '/home': (context) => BottomNavigation(),
+      },
     );
   }
 }
-
-
