@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
 
 class Camera extends StatefulWidget {
   @override
@@ -9,6 +10,8 @@ class Camera extends StatefulWidget {
 class _CameraPageState extends State<Camera> {
   CameraController? controller;
   List<CameraDescription>? cameras;
+  final ImageLabeler _imageLabeler = ImageLabeler(options: ImageLabelerOptions());
+  Map<String, int> foodDictionary = {};
 
   @override
   void initState() {
@@ -24,6 +27,27 @@ class _CameraPageState extends State<Camera> {
       setState(() {});
     } else {
       print('No cameras available');
+    }
+  }
+
+  Future<void> _captureImage() async {
+    if (controller != null && controller!.value.isInitialized) {
+      try {
+        final image = await controller!.takePicture();
+        final inputImage = InputImage.fromFilePath(image.path);
+        final labels = await _imageLabeler.processImage(inputImage);
+
+        for (var label in labels) {
+          final text = label.label;
+          if (text.contains('food') || text.contains('aliment')) {
+            foodDictionary[text] = (foodDictionary[text] ?? 0) + 1;
+          }
+        }
+
+        print('Aliments détectés: $foodDictionary');
+      } catch (e) {
+        print('Erreur lors de la capture de l\'image: $e');
+      }
     }
   }
 
