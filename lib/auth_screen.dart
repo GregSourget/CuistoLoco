@@ -11,7 +11,7 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _codeController = TextEditingController();
-  String? verificationCode;
+  String? verificationCode = "1";
 
   TwilioFlutter twilioFlutter = TwilioFlutter(
     accountSid: dotenv.env['ACC_SID'] ?? '',
@@ -19,14 +19,14 @@ class _AuthScreenState extends State<AuthScreen> {
     twilioNumber: dotenv.env['NUMBER'] ?? '',
   );
 
-  Future<void> sendVerificationCode() async {
-    String phoneNumber = _phoneController.text;
-    verificationCode = generateVerificationCode(); // Génère un code aléatoire
-    await twilioFlutter.sendSMS(
-      toNumber: phoneNumber,
-      messageBody: 'Votre code de vérification est : $verificationCode',
-    );
-  }
+  // Future<void> sendVerificationCode() async {
+  //   String phoneNumber = _phoneController.text;
+  //   verificationCode = generateVerificationCode(); // Génère un code aléatoire
+  //   await twilioFlutter.sendSMS(
+  //     toNumber: phoneNumber,
+  //     messageBody: 'Votre code de vérification est : $verificationCode',
+  //   );
+  // }
 
   void verifyCode() {
     String enteredCode = _codeController.text;
@@ -67,10 +67,10 @@ class _AuthScreenState extends State<AuthScreen> {
               controller: _codeController,
               decoration: InputDecoration(labelText: 'Code de vérification'),
             ),
-            ElevatedButton(
-              onPressed: sendVerificationCode,
-              child: Text('Envoyer le code'),
-            ),
+            // ElevatedButton(
+            //   onPressed: sendVerificationCode,
+            //   child: Text('Envoyer le code'),
+            // ),
             ElevatedButton(
               onPressed: verifyCode,
               child: Text('Vérifier le code'),
