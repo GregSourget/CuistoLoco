@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:twilio_flutter/twilio_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'utils.dart';
 import 'home_screen.dart';
+import 'register.dart';
 
 class AuthScreen extends StatefulWidget {
+  final String email;
+  final String password;
+
+  AuthScreen({required this.email, required this.password});
+
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
@@ -29,9 +36,11 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  void verifyCode() {
+  void verifyCode() async{
     String enteredCode = _codeController.text;
+    String phoneNumber = _phoneController.text;
     if (enteredCode == verificationCode) {
+      createAccount(widget.email, widget.password, phoneNumber);
       // Le code est correct, naviguer vers HomeScreen
       Navigator.pushReplacement(
         context,
@@ -52,6 +61,32 @@ class _AuthScreenState extends State<AuthScreen> {
           ],
         ),
       );
+    }
+  }
+
+  Future<void> createAccount(String email, String password, String phone) async {
+    try {
+      final response = await Supabase.instance.client.auth.signUp(
+        email: email,
+        password: password,
+        data: {'phone': phone},
+      );
+      final user = response.user;
+      if (user != null) {
+        // 2️⃣ Ajouter le numéro de téléphone dans la table `profiles`
+        await Supabase.instance.client.from('profiles').insert({
+          'id': user.id,  // Associe le profil à l'utilisateur
+          'phone': phone,
+        });
+        // Compte créé avec succès, naviguer vers HomeScreen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      }
+    } catch (e) {
+      // Gérer l'erreur ici
+      print('Erreur lors de la création du compte: $e');
     }
   }
 
