@@ -29,11 +29,29 @@ class _AuthScreenState extends State<AuthScreen> {
 
   Future<void> sendVerificationCode() async {
     String phoneNumber = _phoneController.text;
-    verificationCode = generateVerificationCode(); // Génére un code aléatoire
-    await twilioFlutter.sendSMS(
-      toNumber: phoneNumber,
-      messageBody: 'Votre code de vérification est : $verificationCode',
-    );
+    if (isValidPhoneNumber(phoneNumber)) {
+      verificationCode = generateVerificationCode(); // Génére un code aléatoire
+      await twilioFlutter.sendSMS(
+        toNumber: phoneNumber,
+        messageBody: 'Votre code de vérification est : $verificationCode',
+      );
+    }
+    else {
+      // Afficher un message d'erreur si le numéro de téléphone est invalide
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Erreur'),
+          content: Text('Veuillez saisir un numéro de téléphone valide.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   void verifyCode() async{
@@ -89,6 +107,17 @@ class _AuthScreenState extends State<AuthScreen> {
       print('Erreur lors de la création du compte: $e');
     }
   }
+
+  bool isValidPhoneNumber(String phoneNumber) {
+    // Expression régulière pour valider un numéro de téléphone international
+    final phoneRegExp = RegExp(
+      r'^\+?[1-9]\d{1,14}$',
+    );
+    return phoneRegExp.hasMatch(phoneNumber);
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {

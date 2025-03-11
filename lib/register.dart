@@ -50,7 +50,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   bool isValidPassword(String password) {
-    // Vérifie que le mot de passe a au moins 6 caractères
     return password.length >= 6;
   }
 
