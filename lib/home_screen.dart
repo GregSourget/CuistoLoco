@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'camera.dart';
-import 'mistral_api.dart';
+import 'camera.dart';  // Cette importation peut ne plus être nécessaire
+import 'pixtral_api.dart';
+import 'mistral_api.dart';// Assurez-vous d'importer PixtralAPI
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -14,14 +15,11 @@ class HomeScreen extends StatelessWidget {
             Text('Bienvenue sur la page d\'accueil !'),
             SizedBox(height: 20), // Espace entre le texte et les boutons
             ElevatedButton(
-              onPressed: () {
-                // Naviguer vers la page de la caméra
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Camera()),
-                );
+              onPressed: () async {
+                // Appeler la méthode captureAndSendImage de PixtralAPI
+                await PixtralAPI.captureAndSendImage();
               },
-              child: Text('Ouvrir la caméra'),
+              child: Text('Ouvrir la caméra et envoyer l\'image'),
             ),
             SizedBox(height: 20), // Espace entre les deux boutons
             ElevatedButton(

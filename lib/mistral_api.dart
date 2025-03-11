@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class MistralAPI {
   static String apiKey = dotenv.env['MISTRAL_KEY'] ?? '';
   static String model = 'mistral-small-latest';
+  static String agentId = dotenv.env['MISTRAL_AGENT'] ?? '';
   static String url = 'https://api.mistral.ai/v1/chat/completions';
 
   static Future<String> getSummary() async {
@@ -15,6 +16,7 @@ class MistralAPI {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $apiKey',
+        'Agent-ID': agentId,
       },
       body: jsonEncode({
         'model': model,

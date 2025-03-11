@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'pixtral_api.dart'; // Assurez-vous que le chemin est correct
 
 class Camera extends StatefulWidget {
   @override
@@ -40,7 +41,29 @@ class _CameraPageState extends State<Camera> {
     }
     return Scaffold(
       appBar: AppBar(title: Text('Camera')),
-      body: CameraPreview(controller!),
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: <Widget>[
+          CameraPreview(controller!),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: () async {
+                // Capture the image
+                if (controller != null && controller!.value.isInitialized) {
+                  try {
+                    await controller!.takePicture();
+                    await PixtralAPI.captureAndSendImage();
+                  } catch (e) {
+                    print('Error capturing image: $e');
+                  }
+                }
+              },
+              child: Text('Capture Image and Send to Pixtral'),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
