@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:twilio_flutter/twilio_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'utils.dart';
-import 'home_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -22,7 +21,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   Future<void> sendVerificationCode() async {
     String phoneNumber = _phoneController.text;
-    verificationCode = generateVerificationCode(); // Génére un code aléatoire
+    verificationCode = generateVerificationCode(); // Génère un code aléatoire
     await twilioFlutter.sendSMS(
       toNumber: phoneNumber,
       messageBody: 'Votre code de vérification est : $verificationCode',
@@ -33,10 +32,7 @@ class _AuthScreenState extends State<AuthScreen> {
     String enteredCode = _codeController.text;
     if (enteredCode == verificationCode) {
       // Le code est correct, naviguer vers HomeScreen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
+      Navigator.pushReplacementNamed(context, '/home');
     } else {
       // Le code est incorrect, afficher un message d'erreur
       showDialog(
