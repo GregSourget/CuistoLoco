@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'utils.dart';
 import 'home_screen.dart';
-import 'register.dart';
+
 
 class AuthScreen extends StatefulWidget {
   final String email;
@@ -73,19 +73,19 @@ class _AuthScreenState extends State<AuthScreen> {
       );
       final user = response.user;
       if (user != null) {
-        // 2️⃣ Ajouter le numéro de téléphone dans la table `profiles`
+        // Ajouter le numéro de téléphone dans la table `profiles`
         await Supabase.instance.client.from('profiles').insert({
-          'id': user.id,  // Associe le profil à l'utilisateur
+          'id': user.id,
           'phone': phone,
         });
-        // Compte créé avec succès, naviguer vers HomeScreen
+        // Compte créé
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
         );
       }
     } catch (e) {
-      // Gérer l'erreur ici
+      // Gérer les erreurs du try
       print('Erreur lors de la création du compte: $e');
     }
   }

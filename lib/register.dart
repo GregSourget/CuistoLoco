@@ -15,7 +15,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String password = _passwordController.text;
 
     // Vous pouvez ajouter une validation ici pour vérifier que l'email et le mot de passe sont valides
-    if (email.isNotEmpty && password.isNotEmpty && isValidEmail(email)) {
+    if (email.isNotEmpty && isValidEmail(email) && password.isNotEmpty  && isValidPassword(password)) {
     // Naviguer vers l'écran d'authentification
     Navigator.push(
       context,
@@ -29,7 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text('Erreur'),
-          content: Text('Veuillez remplir tous les champs correctements.'),
+          content: Text('Veuillez remplir tous les champs correctements (mdp > 6 charactères).'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -47,6 +47,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     );
     return emailRegExp.hasMatch(email);
+  }
+
+  bool isValidPassword(String password) {
+    // Vérifie que le mot de passe a au moins 6 caractères
+    return password.length >= 6;
   }
 
   @override
