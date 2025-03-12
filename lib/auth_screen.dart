@@ -29,14 +29,13 @@ class _AuthScreenState extends State<AuthScreen> {
   Future<void> sendVerificationCode() async {
     String phoneNumber = _phoneController.text;
     if (isValidPhoneNumber(phoneNumber)) {
-      verificationCode = generateVerificationCode(); // Génére un code aléatoire
+      verificationCode = generateVerificationCode();
       await twilioFlutter.sendSMS(
         toNumber: phoneNumber,
         messageBody: 'Votre code de vérification est : $verificationCode',
       );
     }
     else {
-      // Afficher un message d'erreur si le numéro de téléphone est invalide
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -105,7 +104,6 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   bool isValidPhoneNumber(String phoneNumber) {
-    // Expression régulière pour valider un numéro de téléphone international
     final phoneRegExp = RegExp(
       r'^\+?[1-9]\d{1,14}$',
     );

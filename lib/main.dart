@@ -22,15 +22,15 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData.dark().copyWith(
         colorScheme: ColorScheme.dark(
-          primary: Colors.teal, // Couleur primaire personnalisée
-          secondary: Colors.amber, // Couleur d'accentuation personnalisée
+          primary: Colors.teal,
+          secondary: Colors.amber,
         ),
-        scaffoldBackgroundColor: Colors.black, // Couleur de fond des écrans
+        scaffoldBackgroundColor: Colors.black,
         appBarTheme: AppBarTheme(
-          color: Colors.teal, // Couleur de la barre d'application
+          color: Colors.teal,
         ),
         buttonTheme: ButtonThemeData(
-          buttonColor: Colors.amber, // Couleur des boutons
+          buttonColor: Colors.amber,
           textTheme: ButtonTextTheme.primary,
         ),
       ),
