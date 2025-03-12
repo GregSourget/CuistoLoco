@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class PixtralAPI {
   static String apiKey = dotenv.env['MISTRAL_KEY'] ?? '';
@@ -30,7 +31,8 @@ class PixtralAPI {
     final response = await http.post(
       Uri.parse(url),
       headers: {
-        'Content-Type': 'application/json',
+
+        'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $apiKey',
         'Agent-ID': agentId,
       },
@@ -42,7 +44,7 @@ class PixtralAPI {
             "content": [
               {
                 "type": "text",
-                "text": "Dis-moi quelle nourriture tu vois sur cette image :",
+                "text": "Dis-moi uniquement les ingrédients visibles sur cette image, séparés par des virgules, sans aucune phrase. Par exemple : bananes, pomme, fromage.",
               },
               {
                 "type": "image_url",
@@ -57,7 +59,8 @@ class PixtralAPI {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       String responseMessage = data['choices'][0]['message']['content']; // Récupération du contenu de la réponse
-      print('Réponse générée : $responseMessage');
+      String summaryUtf8 = utf8.decode(responseMessage.codeUnits);
+      print('Réponse générée : $summaryUtf8');
       return responseMessage; // Retourne la réponse générée
     } else {
       throw Exception('Erreur ${response.statusCode}: ${response.body}');
