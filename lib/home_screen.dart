@@ -13,13 +13,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Accueil')),
+      appBar: AppBar(
+        title: Text('Accueil'),
+        automaticallyImplyLeading: false, // Désactiver la flèche de retour
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Bienvenue sur la page d'accueil !"),
+            Text(
+              "Bienvenue sur la page d'accueil !",
+              style: TextStyle(fontSize: 20), // Taille de la police 20
+            ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
@@ -30,7 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   print('Erreur lors de la capture de l\'image : $e');
                 }
               },
-              child: Text("Ouvrir la caméra et envoyer l'image"),
+              child: Text(
+                "Scanner votre frigo",
+                style: TextStyle(fontSize: 20), // Taille de la police 20 pour le texte du bouton
+              ),
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -48,13 +57,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   print('Erreur lors de la génération de la recette : $e');
                 }
               },
-              child: Text('Générer une recette'),
+              child: Text(
+                'Générer une recette',
+                style: TextStyle(fontSize: 20), // Taille de la police 20 pour le texte du bouton
+              ),
             ),
             SizedBox(height: 20),
             if (_recipe.isNotEmpty)
               Text(
                 _recipe,
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 20), // Taille de la police 20 pour le texte de la recette
               ),
           ],
         ),

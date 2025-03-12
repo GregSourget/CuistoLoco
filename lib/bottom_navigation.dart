@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
-import 'cart_screen.dart';
-import 'settings_screen.dart';
+import 'fridge_screen.dart';
+import 'account_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
   @override
@@ -13,8 +13,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    CartScreen(),
-    SettingsScreen(),
+    FridgeScreen(),
+    AccountScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -34,12 +34,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
             label: 'Accueil',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Panier',
+            icon: Icon(Icons.kitchen),
+            label: 'Mon Frigo',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Paramètres',
+            icon: Icon(Icons.account_circle),
+            label: 'Mon Compte',
           ),
         ],
         currentIndex: _selectedIndex,
